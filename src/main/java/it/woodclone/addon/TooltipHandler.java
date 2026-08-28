@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class TooltipHandler {
 
+    // Aggiunge un tooltip per il Wood Clone per indicare come cambiare la modalità da sentinella a guardia del corpo
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
         if (event.getItemStack() != null && !event.getItemStack().isEmpty()) {
