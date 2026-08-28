@@ -13,7 +13,7 @@ import net.narutomod.entity.EntityWoodArm;
 import net.narutomod.entity.EntityWoodBurial;
 import net.narutomod.item.ItemJutsu;
 
-public class EntityAIWoodCloneJutsu extends EntityAIBase {
+public class EntityAIWoodCloneJutsu extends EntityAIBase { // AI per il Wood Clone
     private final EntityWoodClone clone;
     private EntityLivingBase target;
     private int woodArmCooldown;
@@ -21,13 +21,13 @@ public class EntityAIWoodCloneJutsu extends EntityAIBase {
     private int meleeJutsuCooldown;
     private int jumpCooldown;
 
-    public EntityAIWoodCloneJutsu(EntityWoodClone clone) {
+    public EntityAIWoodCloneJutsu(EntityWoodClone clone) { // Inizializza l'AI con il Wood Clone
         this.clone = clone;
         this.setMutexBits(0);
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean shouldExecute() { 
         EntityLivingBase owner = this.clone.getSummoner();
         EntityLivingBase attackTarget = this.clone.getAttackTarget();
 
@@ -61,7 +61,7 @@ public class EntityAIWoodCloneJutsu extends EntityAIBase {
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean shouldContinueExecuting() { // Controlla se l'AI deve continuare a eseguire
         EntityLivingBase owner = this.clone.getSummoner();
         if (this.target == null || !this.target.isEntityAlive() || this.target.equals(owner)) {
             return false;
@@ -75,7 +75,7 @@ public class EntityAIWoodCloneJutsu extends EntityAIBase {
     }
 
     @Override
-    public void updateTask() {
+    public void updateTask() { // Aggiorna l'AI del Wood Clone
         if (this.target == null || !this.target.isEntityAlive()) return;
 
         if (this.woodArmCooldown > 0) this.woodArmCooldown--;
@@ -87,23 +87,27 @@ public class EntityAIWoodCloneJutsu extends EntityAIBase {
         double heightDiff = this.target.posY - this.clone.posY;
         boolean canSee = this.clone.getEntitySenses().canSee(this.target);
 
+        // Esegue un salto speciale se il bersaglio è più alto di 2,5 blocchi
         if (heightDiff >= 2.5D && distanceSq <= 196.0D && this.jumpCooldown <= 0 && this.clone.onGround) {
             this.executeSuperJump(this.target);
             this.jumpCooldown = 60;
         }
 
+        // Esegue un attacco corpo a corpo se il bersaglio è entro 4 blocchi
         if (distanceSq <= 16.0D && canSee && this.meleeJutsuCooldown <= 0) {
             this.executeMeleeJutsu(this.target);
             this.meleeJutsuCooldown = 60;
             return;
         }
 
+        // Esegue il Wood Burial se il bersaglio è tra 13 e 24 blocchi di distanza
         if (distanceSq >= 169.0D && distanceSq <= 576.0D && canSee && this.woodBurialCooldown <= 0) {
             this.castWoodBurial(this.target);
             this.woodBurialCooldown = 160;
             return;
         }
 
+        // Esegue il Wood Arm se il bersaglio è tra 5 e 12 blocchi di distanza
         if (distanceSq >= 25.0D && distanceSq <= 144.0D && canSee && this.woodArmCooldown <= 0) {
             this.castWoodArm(this.target);
             this.woodArmCooldown = 200;
