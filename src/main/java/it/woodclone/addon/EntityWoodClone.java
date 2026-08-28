@@ -26,17 +26,20 @@ import net.minecraft.world.World;
 import net.narutomod.entity.EntityClone;
 import net.narutomod.procedure.ProcedureUtils;
 
-public class EntityWoodClone extends EntityClone.Base {
+public class EntityWoodClone extends EntityClone.Base { // Estende la classe base di EntityClone per aggiungere funzionalità specifiche del Wood Clone
 
     private static final DataParameter<Boolean> SENTINEL_MODE = EntityDataManager.createKey(EntityWoodClone.class, DataSerializers.BOOLEAN);
     private BlockPos guardPos;
     private int fireCooldownTicks = 0;
 
+    // Costruttore di default
     public EntityWoodClone(World world) {
         super(world);
+        // Imposta l'altezza del passo per consentire al Wood Clone di salire su blocchi più alti
         this.stepHeight = 3.0F;
     }
 
+    // Costruttore che accetta il summoner come parametro
     public EntityWoodClone(EntityLivingBase summonerIn) {
         super(summonerIn);
         this.stepHeight = 3.0F;
@@ -50,6 +53,7 @@ public class EntityWoodClone extends EntityClone.Base {
         this.dataManager.register(SENTINEL_MODE, false);
     }
 
+    // Metodo per verificare se il Wood Clone è in modalità sentinella
     public boolean isSentinelMode() {
         return this.dataManager.get(SENTINEL_MODE);
     }
@@ -83,7 +87,9 @@ public class EntityWoodClone extends EntityClone.Base {
             }
         });
 
+        // 4. Guarda il giocatore più vicino entro 6 blocchi
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+        // 5. Guarda intorno quando non ha un bersaglio
         this.tasks.addTask(5, new EntityAILookIdle(this));
 
         // Reazione difensiva: risponde se viene colpito
@@ -197,6 +203,7 @@ public class EntityWoodClone extends EntityClone.Base {
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(36.0D);
     }
 
+    // Applica le modifiche agli attributi del Wood Clone in base agli attributi del summoner
     public void applyWoodCloneScaling(EntityLivingBase summoner) {
         if (summoner == null) return;
 
@@ -238,6 +245,7 @@ public class EntityWoodClone extends EntityClone.Base {
         return super.processInteract(player, hand);
     }
 
+    // Override per consentire al Wood Clone di arrampicarsi su blocchi più alti
     @Override
     public boolean isOnLadder() {
         return this.collidedHorizontally || super.isOnLadder();
@@ -264,6 +272,7 @@ public class EntityWoodClone extends EntityClone.Base {
 
     @Override
     public void setRevengeTarget(EntityLivingBase livingBase) {
+        // Evita che il Wood Clone attacchi il suo summoner
         if (livingBase != null && livingBase.equals(this.getSummoner())) {
             return;
         }
