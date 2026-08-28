@@ -10,10 +10,13 @@ import net.narutomod.Chakra;
 import net.narutomod.PlayerTracker;
 import net.narutomod.item.ItemJutsu;
 
-public class JutsuWoodClone implements ItemJutsu.IJutsuCallback {
+// Classe per gestire l'evocazione del Wood Clone tramite jutsu
+public class JutsuWoodClone implements ItemJutsu.IJutsuCallback { 
 
+    // Implementazione del metodo per creare il jutsu del Wood Clone
     @Override
     public boolean createJutsu(ItemStack stack, EntityLivingBase entity, float power) {
+        // Verifica se l'entità è un giocatore
         if (!(entity instanceof EntityPlayer)) {
             return false;
         }
@@ -35,6 +38,7 @@ public class JutsuWoodClone implements ItemJutsu.IJutsuCallback {
             return false;
         }
 
+        // Evoca il Wood Clone solo se il mondo non è remoto (server-side)
         if (!player.world.isRemote) {
             // Drena la porzione extra di chakra dinamico oltre a quella base
             Chakra.pathway(player).consume(dynamicChakraCost);
