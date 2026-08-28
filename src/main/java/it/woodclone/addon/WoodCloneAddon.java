@@ -48,6 +48,7 @@ public class WoodCloneAddon {
         new JutsuWoodClone()
     );
 
+    // Aggiunge un tooltip per il Wood Clone per indicare come cambiare la modalità da sentinella a guardia del corpo
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
@@ -97,6 +98,7 @@ public class WoodCloneAddon {
                 Field jutsuListField = ItemJutsu.Base.class.getDeclaredField("jutsuList");
                 jutsuListField.setAccessible(true);
 
+                // Rimuove il modificatore final per poter modificare jutsuList
                 Field modifiersField = Field.class.getDeclaredField("modifiers");
                 modifiersField.setAccessible(true);
                 modifiersField.setInt(jutsuListField, jutsuListField.getModifiers() & ~Modifier.FINAL);
@@ -126,7 +128,7 @@ public class WoodCloneAddon {
 
                 logger.info("Wood Clone Jutsu aggiunto con successo al menu Mokuton di AHZNB (XP Richiesta: 1500)!");
             }
-        } catch (Exception e) {
+        } catch (Exception e) { // Gestione delle eccezioni per eventuali errori di riflessione
             logger.error("Errore durante l'iniezione del jutsu in ItemMokuton", e);
         }
     }
