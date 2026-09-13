@@ -34,7 +34,7 @@ import org.apache.logging.log4j.Logger;
 public class WoodCloneAddon {
     public static final String MODID = "woodcloneaddon";
     public static final String NAME = "AHZNB Wood Clone Addon";
-    public static final String VERSION = "1.3";
+    public static final String VERSION = "1.3.1";
 
     public static Logger logger;
 
@@ -79,7 +79,9 @@ public class WoodCloneAddon {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new TooltipHandler());
+        if (event.getSide().isClient()) {
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new TooltipHandler());
+        }
         logger.info("Wood Clone Addon inizializzato.");
     }
 
